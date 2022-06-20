@@ -93,4 +93,4 @@ const loginOrEmpty = () => {
 
 markdown(`Good work${loginOrEmpty()}! ❤️
 
-If you are in doubt what our guidelines for PRs and code reviews are, check out our [guidelines](https://www.notion.so/pleo/PR-and-Code-Review-Culture-at-Pleo-220324344eb849f3b636cd00a28b4a41)! 📚`);
+If you are in doubt what our guidelines for PRs and code reviews are, [check out our guidelines](https://www.notion.so/pleo/PR-and-Code-Review-Culture-at-Pleo-220324344eb849f3b636cd00a28b4a41)! 📚`);
