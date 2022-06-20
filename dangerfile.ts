@@ -6,11 +6,14 @@ const pr = github.pr;
 const commits = github.commits;
 const modified = danger.git.modified_files;
 
+const willShowGuidelines = false
+
 if (github.issue.labels.length === 0) {
   const comment = `This PR is not labeled.
   
   If this repository is released using our [🚤 Automated Release workflow](https://www.notion.so/pleo/Automated-Releases-235f7cab8e034e74bba375ef7e9caf7c), labels are required in order to ship a release.`;
   message(comment);
+  willShowGuidelines = true
 }
 
 // No PR is too small to warrant a paragraph or two of summary.
@@ -19,6 +22,7 @@ if (pr.body.length === 0) {
   
   Giving PRs even a short description makes it easier for reviewers to contextualize the changes in the PR.`;
   fail(comment);
+  willShowGuidelines = true
 }
 
 // PRs have a proper title.
@@ -27,6 +31,7 @@ if (pr.title.match(/[A-Z].*/)) {
   
   Giving PRs a well-formatted title makes it easy for reviewers to get an overview of the changes in the PR and makes it easy to maintain a CHANGELOG.`;
   warn(comment);
+  willShowGuidelines = true
 }
 
 // PRs should be small.
@@ -36,6 +41,7 @@ if (github.pr.additions + github.pr.deletions > bigPRThreshold) {
   
   Keeping PRs small makes it easier for reviewers to give faster in-depth quality reviews and makes it easier to catch potential bugs.`;
   warn(comment);
+  willShowGuidelines = true
 }
 
 //PRs should include tests for changes.
@@ -43,6 +49,7 @@ const hasModifiedTests = modified.some((f) => f.match(/test/));
 if (hasModifiedTests !== true) {
   const comment = `This PR does not add or modify tests.`;
   warn(comment);
+  willShowGuidelines = true
 
   if (
     github.requested_reviewers.teams.length > 0 ||
@@ -60,6 +67,7 @@ if (commits.some((i) => i.commit.message.length < 3)) {
   
   Ensuring PRs have descriptive commit messages allow reviewers to get an overview of the changes and leads to faster reviews.`;
   message(comment);
+  willShowGuidelines = true
 }
 
 const teamReviewersThreshold = 2;
@@ -68,6 +76,7 @@ if (github.requested_reviewers.teams.length > teamReviewersThreshold) {
   
   Assigning more than 2 teams to PRs leads to confusion around who is responsible for reviewing the PR and longer review times.`;
   warn(comment);
+  willShowGuidelines = true
 }
 
 const userReviewersThreshold = 3;
@@ -76,6 +85,7 @@ if (github.requested_reviewers.users.length > userReviewersThreshold) {
   
   Assigning more than 2 reviewers to PRs leads to confusion around who is responsible for reviewing the PR and longer review times.`;
   warn(comment);
+  willShowGuidelines = true
 }
 
 if (github.requested_reviewers.users.length === 0) {
@@ -83,6 +93,7 @@ if (github.requested_reviewers.users.length === 0) {
   
   Team members and CODEOWNERS can be assigned to get knowledgeable feedback on changes.`;
   message(comment);
+  willShowGuidelines = true
 }
 
 const loginOrEmpty = () => {
@@ -90,6 +101,8 @@ const loginOrEmpty = () => {
   return login ? ` @${login}` : "";
 };
 
-markdown(`Good work${loginOrEmpty()}! ❤️
+markdown(`Good work${loginOrEmpty()}! ❤️`);
 
-If you are in doubt why this appears, [check out our PR guidelines](https://www.notion.so/pleo/PR-and-Code-Review-Culture-at-Pleo-220324344eb849f3b636cd00a28b4a41)! 📚`);
+if (willShowGuidelines) {
+  markdown(`If you are in doubt why this appears, [check out our PR guidelines](https://www.notion.so/pleo/PR-and-Code-Review-Culture-at-Pleo-220324344eb849f3b636cd00a28b4a41)! 📚`);
+}
