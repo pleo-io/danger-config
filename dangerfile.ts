@@ -80,7 +80,7 @@ if (github.requested_reviewers.users.length === 0) {
 
 const loginOrEmpty = () => {
   const login = pr?.user?.login;
-  return ` ${login}` ? login : "";
+  return login ? ` ${login}` : "";
 };
 
 markdown(`Good work${loginOrEmpty()}! ❤️
