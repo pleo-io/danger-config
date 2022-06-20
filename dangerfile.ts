@@ -25,8 +25,7 @@ if (pr.body.length === 0) {
 if (pr.title.match(/[A-Z].*/)) {
   const comment = `This PR does not have a capitalized title.
   
-  Giving PRs a well-formatted title makes it easy for reviewers to get an overview of the changes in the PR.
-  Giving PRs a proper title makes it easy to maintain a good CHANGELOG and clear git history in cases of reverts.`;
+  Giving PRs a well-formatted title makes it easy for reviewers to get an overview of the changes in the PR and makes it easy to maintain a CHANGELOG.`;
   warn(comment);
 }
 
@@ -93,4 +92,4 @@ const loginOrEmpty = () => {
 
 markdown(`Good work${loginOrEmpty()}! ❤️
 
-If you are in doubt what our guidelines for PRs and code reviews are, [check out our guidelines](https://www.notion.so/pleo/PR-and-Code-Review-Culture-at-Pleo-220324344eb849f3b636cd00a28b4a41)! 📚`);
+If you are in doubt why this appears, [check out our PR guidelines](https://www.notion.so/pleo/PR-and-Code-Review-Culture-at-Pleo-220324344eb849f3b636cd00a28b4a41)! 📚`);
