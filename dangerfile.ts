@@ -22,7 +22,7 @@ if (pr.body.length === 0) {
 }
 
 // PRs have a proper title.
-if (pr.title.match(/[A-Z].*/)) {
+if (!pr.title.match(/[A-Z].*/)) {
   const comment = `This PR does not have a capitalized title.`;
   warn(comment);
   willShowGuidelines = true
