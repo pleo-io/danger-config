@@ -72,7 +72,7 @@ if (github.requested_reviewers.users.length > userReviewersThreshold) {
   willShowGuidelines = true
 }
 
-if (github.requested_reviewers.users.length === 0) {
+if (github.requested_reviewers.users.length === 0 || github.requested_reviewers.teams.length === 0) {
   const comment = `This PR has no assigned reviewers.`;
   message(comment);
   willShowGuidelines = true
