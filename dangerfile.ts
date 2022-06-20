@@ -6,7 +6,7 @@ const pr = github.pr;
 const commits = github.commits;
 const modified = danger.git.modified_files;
 
-const willShowGuidelines = false
+let willShowGuidelines = false
 
 if (github.issue.labels.length === 0) {
   const comment = `This PR is not labeled.`;
