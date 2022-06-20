@@ -1,0 +1,11 @@
+{
+  "name": "danger-config",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:pleo-io/danger-config.git",
+  "author": "Anders Fischer-Nielsen <andersfischern@me.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "danger": "^11.0.7"
+  }
+}

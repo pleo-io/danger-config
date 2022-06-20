@@ -1,120 +1,88 @@
-const { includes } = require('lodash');
-const fs = require('fs');
+import { danger, fail, markdown, message, warn } from "danger";
 
 // Setup
 const github = danger.github;
 const pr = github.pr;
 const commits = github.commits;
 const modified = danger.git.modified_files;
-const bodyAndTitle = (pr.body + pr.title).toLowerCase();
-console.log(commits.map(({ sha }) => sha));
 
-// Custom modifiers for people submitting PRs to be able to say "skip this"
-const trivialPR = bodyAndTitle.includes('trivial');
-const acceptedNoTests = bodyAndTitle.includes('skip new tests');
-
-const typescriptOnly = (file: string) => includes(file, '.ts');
-const filesOnly = (file: string) =>
-  fs.existsSync(file) && fs.lstatSync(file).isFile();
-
-// Custom subsets of known files
-const modifiedAppFiles = modified
-  .filter(p => includes(p, 'src/') || includes(p, 'test/'))
-  .filter(p => filesOnly(p) && typescriptOnly(p));
-
-// Takes a list of file paths, and converts it into clickable links
-const linkableFiles = paths => {
-  const repoURL = pr.head.repo.html_url;
-  const ref = pr.head.ref;
-  const links = paths.map(path => {
-    return createLink(`${repoURL}/blob/${ref}/${path}`, path);
-  });
-  return toSentence(links);
-};
-
-// ["1", "2", "3"] to "1, 2 and 3"
-const toSentence = (array: Array<string>): string => {
-  if (array.length === 1) {
-    return array[0];
-  }
-  return array.slice(0, array.length - 1).join(', ') + ' and ' + array.pop();
-};
-
-// ("/href/thing", "name") to "<a href="/href/thing">name</a>"
-const createLink = (href: string, text: string): string =>
-  `<a href='${href}'>${text}</a>`;
-
-// Raise about missing code inside files
-const raiseIssueAboutPaths = (
-  type: Function,
-  paths: string[],
-  codeToInclude: string,
-) => {
-  if (paths.length > 0) {
-    const files = linkableFiles(paths);
-    const strict = '<code>' + codeToInclude + '</code>';
-    type(`Please ensure that ${strict} is enabled on: ${files}`);
-  }
-};
-
-console.log('GitHub PR Username:', pr && pr.user && pr.user.login);
-
-const githubBotUsernames = ['greenkeeper', 'renovate[bot]'];
-
-const isBot =
-  pr && pr.user && pr.user.login && githubBotUsernames.includes(pr.user.login);
-
-// Rules
-if (!isBot) {
-  // make sure someone else reviews these changes
-  // const someoneAssigned = danger.github.pr.assignee;
-  // if (someoneAssigned === null) {
-  //   warn(
-  //     'Please assign someone to merge this PR, and optionally include people who should review.'
-  //   );
-  // }
-
-  // When there are app-changes and it's not a PR marked as trivial, expect
-  // there to be CHANGELOG changes.
-  const changelogChanges = modified.some(x => x.indexOf('CHANGELOG') > -1);
-  if (modifiedAppFiles.length > 0 && !trivialPR && !changelogChanges) {
-    fail('No CHANGELOG added.');
-  }
-
-  // No PR is too small to warrant a paragraph or two of summary
-  if (pr.body.length === 0) {
-    fail('Please add a description to your PR.');
-  }
-
-  const hasAppChanges = modifiedAppFiles.length > 0;
-
-  const testChanges = modifiedAppFiles.filter(filepath =>
-    filepath.includes('test'),
-  );
-  const hasTestChanges = testChanges.length > 0;
-
-  // Warn when there is a big PR
-  const bigPRThreshold = 500;
-  if (github.pr.additions + github.pr.deletions > bigPRThreshold) {
-    warn(':exclamation: Big PR');
-  }
-
-  // Warn if there are library changes, but not tests
-  if (hasAppChanges && !hasTestChanges) {
-    warn(
-      "There are library changes, but not tests. That's OK as long as you're refactoring existing code",
-    );
-  }
-
-  // Be careful of leaving testing shortcuts in the codebase
-  const onlyTestFiles = testChanges.filter(x => {
-    const content = fs.readFileSync(x).toString();
-    return (
-      content.includes('it.only') ||
-      content.includes('describe.only') ||
-      content.includes('fdescribe') ||
-      content.includes('fit(')
-    );
-  });
-  raiseIssueAboutPaths(fail, onlyTestFiles, 'an `only` was left in the test');
+if (github.issue.labels.length === 0) {
+  const comment = `This PR is not labeled.
+  If this repository is released using our [🚤 Automated Release workflow](https://www.notion.so/pleo/Automated-Releases-235f7cab8e034e74bba375ef7e9caf7c), labels are required in order to ship a release.`;
+  message(comment);
 }
+
+// No PR is too small to warrant a paragraph or two of summary.
+if (pr.body.length === 0) {
+  const comment = `This PR does not include a description.
+  Giving PRs even a short description makes it easier for reviewers to contextualize the changes in the PR.`;
+  fail(comment);
+}
+
+// PRs have a proper title.
+if (pr.title.match(/[A-Z].*/)) {
+  const comment = `This PR does not have a capitalized title.
+  Giving PRs a well-formatted title makes it easy for reviewers to get an overview of the changes in the PR.
+  Giving PRs a proper title makes it easy to maintain a good CHANGELOG and clear git history in cases of reverts.`;
+  warn(comment);
+}
+
+// PRs should be small.
+const bigPRThreshold = 500;
+if (github.pr.additions + github.pr.deletions > bigPRThreshold) {
+  const comment = `This PR has more than ${bigPRThreshold} changes.
+  Keeping PRs small makes it easier for reviewers to give faster in-depth quality reviews and makes it easier to catch potential bugs.`;
+  warn(comment);
+}
+
+//PRs should include tests for changes.
+const hasModifiedTests = modified.some((f) => f.match(/test/));
+if (hasModifiedTests !== true) {
+  const comment = `This PR does not add or modify tests.`;
+  warn(comment);
+
+  if (
+    github.requested_reviewers.teams.length > 0 ||
+    github.requested_reviewers.users.length > 0
+  ) {
+    const secondComment = `This PR has assigned reviewers, but does not add tests.
+    Testing PR changes before requesting a review leads to faster in-depth quality reviews and makes it easier to catch potential bugs.`;
+    message(secondComment);
+  }
+}
+
+if (commits.some((i) => i.commit.message.length < 3)) {
+  const comment = `This PR has commits with short messages.
+  Ensuring PRs have descriptive commit messages allow reviewers to get an overview of the changes and leads to faster reviews.`;
+  message(comment);
+}
+
+const teamReviewersThreshold = 2;
+if (github.requested_reviewers.teams.length > teamReviewersThreshold) {
+  const comment = `This PR has more than ${teamReviewersThreshold} teams assigned.
+  Assigning more than 2 teams to PRs leads to confusion around who is responsible for reviewing the PR and longer review times.`;
+  warn(comment);
+}
+
+const userReviewersThreshold = 3;
+if (github.requested_reviewers.users.length > userReviewersThreshold) {
+  const comment = `This PR has more than ${userReviewersThreshold} individual reviewers assigned.
+  Assigning more than 2 reviewers to PRs leads to confusion around who is responsible for reviewing the PR and longer review times.`;
+  warn(comment);
+}
+
+if (github.requested_reviewers.users.length === 0) {
+  const comment = `This PR has no assigned reviewers.
+  Getting feedback earlier from reviewers can significantly reduce review time.
+  Team members and CODEOWNERS can be assigned to get knowledgeable feedback on changes.`;
+  message(comment);
+}
+
+const loginOrEmpty = () => {
+  const login = pr?.user?.login;
+  return ` ${login}` ? login : "";
+};
+
+markdown(`Good work${loginOrEmpty()}! ❤️
+
+If you are in doubt what our guidelines for PRs and code reviews are, check out our [guidelines](https://www.notion.so/pleo/PR-and-Code-Review-Culture-at-Pleo-220324344eb849f3b636cd00a28b4a41)! 📚`);
