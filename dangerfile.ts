@@ -88,6 +88,10 @@ if (willShowGuidelines) {
   
   If you are in wondering why these messages appear, [check out our PR guidelines](https://www.notion.so/pleo/PR-and-Code-Review-Culture-at-Pleo-220324344eb849f3b636cd00a28b4a41)! 📚
   
+  ---
+  
+  _These guidelines are defined in [our Dangerfile](https://github.com/pleo-io/danger-config/blob/master/dangerfile.ts). Please reach out to #engprod-devexp on Slack if you disagree with these guidelines._
+  
   `
   markdown(message);
 }
