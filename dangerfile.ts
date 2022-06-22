@@ -84,13 +84,13 @@ const loginOrEmpty = () => {
 };
 
 if (willShowGuidelines) {
-  const message = `Good work${loginOrEmpty()}! ❤️
+  const message = `❤️ Good work${loginOrEmpty()}!
   
-  If you are in wondering why these messages appear, [check out our PR guidelines](https://www.notion.so/pleo/PR-and-Code-Review-Culture-at-Pleo-220324344eb849f3b636cd00a28b4a41)! 📚
+  📚  If you are in wondering why these messages appear, [check out our PR guidelines](https://www.notion.so/pleo/PR-and-Code-Review-Culture-at-Pleo-220324344eb849f3b636cd00a28b4a41)!
   
   ---
   
-  _These guidelines are defined in [our Dangerfile](https://github.com/pleo-io/danger-config/blob/master/dangerfile.ts). Please reach out to [#engprod-devexp](https://getpleo.slack.com/archives/C030H8BMU8K) on Slack if you disagree with these guidelines._
+  ❤️ _These guidelines are defined in [our Dangerfile](https://github.com/pleo-io/danger-config/blob/master/dangerfile.ts). Please reach out to [#engprod-devexp](https://getpleo.slack.com/archives/C030H8BMU8K) on Slack if you disagree with the guidelines._
   
   `
   markdown(message);
