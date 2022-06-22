@@ -1,2 +1,3 @@
-# danger-config
-The Danger configuration for Pleo
+# Dangerfile
+
+The Danger configuration for Pleo.
