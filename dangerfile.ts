@@ -22,8 +22,8 @@ if (pr.body.length === 0) {
 }
 
 // PRs have a proper title.
-if (!pr.title.match(/[A-Z].*/)) {
-  const comment = `This PR does not have a capitalized title.`;
+if (pr.title.length < 4) {
+  const comment = `This PR does not have descriptive title.`;
   warn(comment);
   willShowGuidelines = true
 }
@@ -84,6 +84,10 @@ const loginOrEmpty = () => {
 };
 
 if (willShowGuidelines) {
-  markdown(`Good work${loginOrEmpty()}! ❤️`);
-  markdown(`If you are in wondering why these messages appear, [check out our PR guidelines](https://www.notion.so/pleo/PR-and-Code-Review-Culture-at-Pleo-220324344eb849f3b636cd00a28b4a41)! 📚`);
+  const message = `Good work${loginOrEmpty()}! ❤️
+  
+  If you are in wondering why these messages appear, [check out our PR guidelines](https://www.notion.so/pleo/PR-and-Code-Review-Culture-at-Pleo-220324344eb849f3b636cd00a28b4a41)! 📚
+  
+  `
+  markdown(message);
 }
