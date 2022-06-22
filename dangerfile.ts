@@ -53,7 +53,7 @@ if (hasModifiedTests !== true) {
 }
 
 if (commits.some((i) => i.commit.message.length < 3)) {
-  const comment = `This PR has commits with short messages.`;
+  const comment = `This PR has commits with short or non-descriptive messages.`;
   message(comment);
   willShowGuidelines = true
 }
