@@ -90,7 +90,7 @@ if (willShowGuidelines) {
   
   ---
   
-  ❤️ _These guidelines are defined in [our Dangerfile](https://github.com/pleo-io/danger-config/blob/master/dangerfile.ts). Please reach out to [#engprod-devexp](https://getpleo.slack.com/archives/C030H8BMU8K) on Slack if you disagree with the guidelines._
+  📄 _Guidelines are defined in [our Dangerfile](https://github.com/pleo-io/danger-config/blob/master/dangerfile.ts). Reach out to [#engprod-devexp](https://getpleo.slack.com/archives/C030H8BMU8K) on Slack for questions._
   
   `
   markdown(message);
