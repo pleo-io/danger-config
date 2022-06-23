@@ -1,6 +1,21 @@
 name: "Validate syntax"
 on:
-  push:
+  pull_request:
+    types:
+      - assigned
+      - unassigned
+      - labeled
+      - unlabeled
+      - opened
+      - edited
+      - closed
+      - reopened
+      - synchronize
+      - ready_for_review
+      - locked
+      - unlocked
+      - review_requested
+      - review_request_removed
 
 jobs:
   validate-dangerfile:
@@ -10,7 +25,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-    
+
       - name: Setup
         uses: actions/setup-node@v3
 
