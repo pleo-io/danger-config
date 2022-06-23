@@ -20,7 +20,6 @@ on:
 jobs:
   validate-dangerfile:
     name: Validate
-    permissions: read-all
     runs-on: ubuntu-latest
 
     steps:
