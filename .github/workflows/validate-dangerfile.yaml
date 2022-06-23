@@ -31,7 +31,7 @@ jobs:
         uses: actions/setup-node@v3
 
       - name: Validate TypeScript syntax
-        run: npx tsc
+        run: yarn
 
       - name: Validate Dangerfile
         run: npx danger ci -v --text-only --dangerfile dangerfile.ts
