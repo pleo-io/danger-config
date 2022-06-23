@@ -29,8 +29,11 @@ jobs:
       - name: Setup
         uses: actions/setup-node@v3
 
-      - name: Validate TypeScript syntax
+      - name: Install packages
         run: yarn
+
+      - name: Validate TypeScript syntax
+        run: tsc
 
       # Disabled due to IP allowlist preventing access to the Pleo organisation.
       #
