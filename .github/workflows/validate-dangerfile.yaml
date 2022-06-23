@@ -1,0 +1,18 @@
+name: "Validate syntax"
+on:
+  push:
+
+jobs:
+  validate-dangerfile:
+    name: Validate Dangerfile
+    runs-on: [self-hosted, universal]
+
+    steps:
+      - name: Setup
+        uses: actions/setup-node@v3
+
+      - name: Validate Dangerfile
+        run: npx danger ci -v --text-only --dangerfile pleo-io/danger-config/dangerfile.ts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DANGER_GITHUB_API_BASE_URL: "https://api.github.com"
