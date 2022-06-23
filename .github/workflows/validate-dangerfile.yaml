@@ -5,8 +5,7 @@ on:
 jobs:
   validate-dangerfile:
     name: Validate Dangerfile
-    runs-on: 
-      - ubuntu
+    runs-on: ubuntu-latest
 
     steps:
       - name: Setup
