@@ -36,5 +36,5 @@ jobs:
       - name: Validate Dangerfile
         run: npx danger ci -v --text-only --dangerfile dangerfile.ts
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.READ_TOKEN }}
           DANGER_GITHUB_API_BASE_URL: "https://api.github.com"
