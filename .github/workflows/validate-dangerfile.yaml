@@ -5,7 +5,8 @@ on:
 jobs:
   validate-dangerfile:
     name: Validate Dangerfile
-    runs-on: [self-hosted, universal]
+    runs-on: 
+      - ubuntu
 
     steps:
       - name: Setup
