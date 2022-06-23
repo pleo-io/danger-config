@@ -1,4 +1,4 @@
-name: "Validate syntax"
+name: "Validate Dangerfile"
 on:
   pull_request:
     types:
@@ -19,7 +19,8 @@ on:
 
 jobs:
   validate-dangerfile:
-    name: Validate Dangerfile
+    name: Validate
+    permissions: read-all
     runs-on: ubuntu-latest
 
     steps:
@@ -28,6 +29,9 @@ jobs:
 
       - name: Setup
         uses: actions/setup-node@v3
+
+      - name: Validate TypeScript syntax
+        run: npx tsc
 
       - name: Validate Dangerfile
         run: npx danger ci -v --text-only --dangerfile dangerfile.ts
