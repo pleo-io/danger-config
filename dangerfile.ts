@@ -6,8 +6,6 @@ const pr = github.pr;
 const commits = github.commits;
 const modified = danger.git.modified_files;
 
-console.log(github.thisPR)
-
 (async () => {
   const isDraft = (
     await github.api.pulls.get({
