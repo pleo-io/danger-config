@@ -1,12 +1,12 @@
 import { danger, fail, markdown, message, warn } from "danger";
 
-// Setup
-const github = danger.github;
-const pr = github.pr;
-const commits = github.commits;
-const modified = danger.git.modified_files;
-
 (async () => {
+  // Setup
+  const github = danger.github;
+  const pr = github.pr;
+  const commits = github.commits;
+  const modified = danger.git.modified_files;
+
   const isDraft = (
     await github.api.pulls.get({
       owner: pr.head?.repo?.owner.login,
