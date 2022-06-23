@@ -9,11 +9,11 @@ const modified = danger.git.modified_files;
 (async () => {
   const isDraft = (
     await github.api.pulls.get({
-      owner: github.thisPR.owner,
-      repo: github.thisPR.repo,
-      pull_number: github.thisPR.number,
+      owner: github.thisPR?.owner,
+      repo: github.thisPR?.repo,
+      pull_number: github.thisPR?.number,
     })
-  ).data.draft;
+  )?.data?.draft;
 
   let willShowGuidelines = false;
 
