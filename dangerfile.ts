@@ -7,6 +7,12 @@ const commits = github.commits;
 const modified = danger.git.modified_files;
 
 (async () => {
+  const isBot = pr.user.login?.includes("pleo-bot");
+
+  if (isBot) {
+    return;
+  }
+
   const isDraft = (
     await github.api.pulls.get({
       owner: github.thisPR?.owner,
