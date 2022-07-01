@@ -13,8 +13,6 @@ const modified = danger.git.modified_files;
     return;
   }
 
-  const modifiedKotlin = modified.some((path) => path.includes(".kt"));
-
   const isDraft = (
     await github.api.pulls.get({
       owner: github.thisPR?.owner,
@@ -54,8 +52,9 @@ const modified = danger.git.modified_files;
   }
 
   //PRs should include tests for changes.
+  const hasModifiedKotlin = modified.some((path) => path.includes(".kt"));
   const hasModifiedTests = modified.some((f) => f.match(/test/));
-  if (modifiedKotlin && hasModifiedTests !== true) {
+  if (hasModifiedKotlin && hasModifiedTests !== true) {
     const comment = `This PR does not add or modify tests.`;
     warn(comment);
     willShowGuidelines = true;
