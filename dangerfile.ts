@@ -23,12 +23,6 @@ const modified = danger.git.modified_files;
 
   let willShowGuidelines = false;
 
-  if (!isDraft && github.issue.labels.length === 0) {
-    const comment = `This PR is not labeled.`;
-    message(comment);
-    willShowGuidelines = true;
-  }
-
   // No PR is too small to warrant a paragraph or two of summary.
   if (!isDraft && pr.body.length === 0) {
     const comment = `This PR does not include a description.`;
