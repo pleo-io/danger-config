@@ -81,7 +81,7 @@ const modified = danger.git.modified_files;
 
 ---
 
-📄 _Guidelines are defined in [our Dangerfile](https://github.com/pleo-io/danger-config/blob/master/dangerfile.ts). Reach out to [#engprod-devexp](https://getpleo.slack.com/archives/C030H8BMU8K) on Slack for questions._
+📄 _Our PR checks are defined in [our Dangerfile](https://github.com/pleo-io/danger-config/blob/master/dangerfile.ts). Reach out to [#engprod-devexp](https://getpleo.slack.com/archives/C030H8BMU8K) for questions._
 
 `;
     markdown(message);
