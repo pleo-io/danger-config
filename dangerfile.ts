@@ -38,7 +38,7 @@ const modified = danger.git.modified_files;
   }
 
   // PRs should be small.
-  const bigPRThreshold = 500;
+  const bigPRThreshold = 600;
   if (github.pr.additions + github.pr.deletions > bigPRThreshold) {
     const comment = `This PR has more than ${bigPRThreshold} changes.`;
     warn(comment);
@@ -52,14 +52,6 @@ const modified = danger.git.modified_files;
     const comment = `This PR does not add or modify tests.`;
     warn(comment);
     willShowGuidelines = true;
-
-    if (
-      github.requested_reviewers.teams.length > 0 ||
-      github.requested_reviewers.users.length > 0
-    ) {
-      const secondComment = `This PR has assigned reviewers, but does not add tests.`;
-      message(secondComment);
-    }
   }
 
   if (!isDraft && commits.some((i) => i.commit.message.length < 3)) {
