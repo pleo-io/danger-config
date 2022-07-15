@@ -77,8 +77,6 @@ const modified = danger.git.modified_files;
   if (willShowGuidelines) {
     const message = `Good work! ❤️ If you are in wondering why these messages appear, [check out our PR guidelines](https://www.notion.so/pleo/PR-and-Code-Review-Culture-at-Pleo-220324344eb849f3b636cd00a28b4a41)! 📚 
 
----
-
 📄 _PR checks are defined in [our Dangerfile](https://github.com/pleo-io/danger-config/blob/master/dangerfile.ts). Reach out to [#engprod-devexp](https://getpleo.slack.com/archives/C030H8BMU8K) for questions._
 
 `;
