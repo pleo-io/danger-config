@@ -46,7 +46,7 @@ const modified = danger.git.modified_files;
   }
 
   //PRs should include tests for changes.
-  const hasModifiedKotlin = modified.some((path) => path.includes(".kt"));
+  const hasModifiedKotlin = modified.some((path) => path.endsWith(".kt"));
   const hasModifiedTests = modified.some((f) => f.match(/test/));
   if (hasModifiedKotlin && hasModifiedTests !== true) {
     const comment = `This PR does not add or modify tests.`;
