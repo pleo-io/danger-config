@@ -60,7 +60,7 @@ const created = danger.git.created_files;
   const hasModifiedTests = modified.some((f) => f.match(/test/));
 
   if (hasModifiedKotlin && !hasModifiedTests) {
-    const comment = `This PR does not modify tests changed files`;
+    const comment = `This PR does not modify tests for changed files`;
     warn(comment);
     willShowGuidelines = true;
   }
