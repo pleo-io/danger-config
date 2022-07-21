@@ -50,11 +50,17 @@ const created = danger.git.created_files;
   const hasCreatedKotlin = created.some((path) => path.endsWith(".kt"));
   const hasCreatedTests = created.some((f) => f.match(/test/));
 
+  if (hasCreatedKotlin && !hasCreatedTests) {
+    const comment = `This PR does not add tests for newly created files`;
+    warn(comment);
+    willShowGuidelines = true;
+  }
+
   const hasModifiedKotlin = modified.some((path) => path.endsWith(".kt"));
   const hasModifiedTests = modified.some((f) => f.match(/test/));
 
-  if (hasModifiedKotlin && !hasModifiedTests || hasCreatedKotlin && !hasCreatedTests) {
-    const comment = `This PR does not add or modify tests.`;
+  if (hasModifiedKotlin && !hasModifiedTests) {
+    const comment = `This PR does not modify tests changed files`;
     warn(comment);
     willShowGuidelines = true;
   }
